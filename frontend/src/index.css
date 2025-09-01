@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@theme {
+    --spacing-section_gap: 60px;
+}
+@theme{
+    --color-light_yellow: #FBF6EA;
+    --color-purple: #592EA9;
+}
