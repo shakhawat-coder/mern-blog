@@ -17,55 +17,13 @@ const BlogDetails = () => {
   const { id } = useParams();
   const singleBlog = useGetSingleBlogQuery(id);
   const blogDescription = singleBlog?.data?.data;
+  console.log(blogDescription);
 
   console.log(" blogdetails", blogDescription);
-  const { data, error, isLoading } = useGetSingleCategoryQuery(
-    blogDescription?.category
-  );
-  console.log("relatedBlogs", data);
+  const categoryId = blogDescription?.category?._id;
+  const { data, error, isLoading } = useGetSingleCategoryQuery(categoryId);
+  const realtedBlog = data?.data?.blogs?.filter((blog) => blog._id !== id);
 
-  const blog = [
-    {
-      id: 1,
-      category: "Startup",
-      image: image1,
-      title: "Design tips for designers that cover everything you need",
-      description:
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.",
-    },
-    {
-      id: 2,
-      category: "Business",
-      image: image2,
-      title: "How to build a successful business from scratch",
-      description:
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.",
-    },
-    {
-      id: 3,
-      category: "Tech",
-      image: image3,
-      title: "The future of technology and its impact on society",
-      description:
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.",
-    },
-    {
-      id: 4,
-      category: "Economy",
-      image: image4,
-      title: "Understanding the global economy and its challenges",
-      description:
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.",
-    },
-    {
-      id: 5,
-      category: "Startup",
-      image: image5,
-      title: "Innovative startup ideas for aspiring entrepreneurs",
-      description:
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.",
-    },
-  ];
   return (
     <>
       <div className="container pt-section_gap mx-auto">
@@ -108,25 +66,41 @@ const BlogDetails = () => {
         </div>
 
         <div className=" mt-20">
-          <h2 className="text-3xl font-bold mb-8">Related Posts</h2>
+          {realtedBlog && realtedBlog.length > 0 ? (
+            <h2 className="text-3xl font-bold mb-8">Related Posts</h2>
+          ) : (
+            ""
+          )}
+
           <div className="grid grid-cols-12  gap-6">
-            {blog
-              .sort(() => Math.random() - 0.5)
-              .slice(0, 3)
-              .map((item) => (
-                <div
-                  key={item.id}
-                  className="col-span-4 rounded-md p-4 hover:bg-gray-100 transition-all duration-300"
-                >
-                  <Link to={`/blog/${item.id}`}>
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-[200px] object-cover mb-4"
-                    />
-                    <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                    <p className="text-gray-600">{item.description}</p>
-                  </Link>
+            {realtedBlog &&
+              realtedBlog.map((item) => (
+                <div className="col-span-4" key={item._id}>
+                  <div className="border border-gray-200 rounded-md shadow-md hover:shadow-xl transition-all duration-300">
+                    <Link to={`/blog/${item._id}`} className="">
+                      <div className="w-full h-48 overflow-hidden">
+                        <img
+                          src={item.image}
+                          alt=""
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </Link>
+                    <div className="p-4">
+                      <Link to={""} className="text-sm text-gray-600 uppercase">
+                        {item.category.name}
+                      </Link>
+                      <Link to={`/blog/${item._id}`}>
+                        <Heading
+                          title={item.title.slice(0, 20) + "..."}
+                          className="text-3xl leading-10 font-bold mt-4"
+                        />
+                      </Link>
+                      <p className="text-sm text-gray-600 mt-2">
+                        {item.description.slice(0, 100) + "..."}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               ))}
           </div>

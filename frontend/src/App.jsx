@@ -17,6 +17,7 @@ import CategoryBlog from "./components/pages/CategoryBlog/CategoryBlog";
 import Author from "./components/pages/Author/Author";
 import Contact from "./components/pages/Contact/Contact";
 import PrivacyPolicy from "./components/pages/PrivacyPolicy/PrivacyPolicy";
+import Registration from "./components/pages/Registration/Registration";
 
 function App() {
   const router = createBrowserRouter(
@@ -24,6 +25,7 @@ function App() {
       <Route path="/" element={<RootLayout />}>
         <Route element={<ScrollRestoration />} />
         <Route index element={<Home />} />
+        <Route path="/registration" element={<Registration />} />
         <Route path="/about" element={<About />} />
         <Route path="/author/:id" element={<Author />} />
         <Route path="/blog" element={<Blog />} />
