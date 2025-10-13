@@ -24,6 +24,33 @@ export const MyBlogApi = createApi({
     getHighlightBlog: builder.query({
       query: () => `/highlight`,
     }),
+    // ============get user registration via frontend===========
+    getRegisterUser: builder.mutation({
+      query: (userData) => ({
+        url: `/register`, // adjust this path if your backend route differs
+        method: "POST",
+        body: userData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
+    getLoginUser: builder.mutation({
+      query: (loginData) => ({
+        url: `/login`, // adjust this path if your backend route differs
+        method: "POST",
+        body: loginData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
+    getLoggedInUser: builder.query({
+      query: () => ({
+        url: "/me",
+        credentials: "include", // ✅ Important if using cookies
+      }),
+    }),
   }),
 });
 
@@ -33,4 +60,7 @@ export const {
   useGetAllBlogQuery,
   useGetSingleBlogQuery,
   useGetHighlightBlogQuery,
+  useGetRegisterUserMutation,
+  useGetLoginUserMutation,
+  useGetLoggedInUserQuery,
 } = MyBlogApi;

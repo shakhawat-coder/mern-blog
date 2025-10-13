@@ -18,6 +18,8 @@ import Author from "./components/pages/Author/Author";
 import Contact from "./components/pages/Contact/Contact";
 import PrivacyPolicy from "./components/pages/PrivacyPolicy/PrivacyPolicy";
 import Registration from "./components/pages/Registration/Registration";
+import Login from "./components/pages/Login/Login";
+import Dashboard from "./dashboard/Dashboard";
 
 function App() {
   const router = createBrowserRouter(
@@ -26,6 +28,7 @@ function App() {
         <Route element={<ScrollRestoration />} />
         <Route index element={<Home />} />
         <Route path="/registration" element={<Registration />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/about" element={<About />} />
         <Route path="/author/:id" element={<Author />} />
         <Route path="/blog" element={<Blog />} />
@@ -33,6 +36,9 @@ function App() {
         <Route path="/category/:id" element={<CategoryBlog />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+
+        {/* =======================dashboard====================== */}
+        <Route path="/dashboard" element={<Dashboard />} />
       </Route>
     )
   );
