@@ -19,7 +19,10 @@ import Contact from "./components/pages/Contact/Contact";
 import PrivacyPolicy from "./components/pages/PrivacyPolicy/PrivacyPolicy";
 import Registration from "./components/pages/Registration/Registration";
 import Login from "./components/pages/Login/Login";
-import Dashboard from "./dashboard/Dashboard";
+import Dashboard from "./dashboard/Pages/Dashboard/Dashboard";
+import AddCategory from "./dashboard/Pages/AddCategory/AddCategory";
+import DashboardRootLayout from "./dashboard/DashboardRootLayout";
+import AllCategories from "./dashboard/Pages/AllCategory/AllCategories";
 
 function App() {
   const router = createBrowserRouter(
@@ -36,9 +39,15 @@ function App() {
         <Route path="/category/:id" element={<CategoryBlog />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/dashboard" element={<DashboardRootLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="add-category" element={<AddCategory />} />
+          <Route path="/dashboard/categories" element={<AllCategories />} />
+        </Route>
 
         {/* =======================dashboard====================== */}
-        <Route path="/dashboard" element={<Dashboard />} />
+        {/* <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard/add-category" element={<AddCategory />} /> */}
       </Route>
     )
   );

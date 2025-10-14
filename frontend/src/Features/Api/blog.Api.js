@@ -7,6 +7,7 @@ export const MyBlogApi = createApi({
     baseUrl: `${import.meta.env.VITE_DOMAIN_NAME}${
       import.meta.env.VITE_API_BASE_URL
     }`,
+    credentials: "include",
   }),
   endpoints: (builder) => ({
     getAllCategory: builder.query({
@@ -48,7 +49,7 @@ export const MyBlogApi = createApi({
     getLoggedInUser: builder.query({
       query: () => ({
         url: "/me",
-        credentials: "include", // ✅ Important if using cookies
+        credentials: "include",
       }),
     }),
   }),

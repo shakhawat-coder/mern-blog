@@ -72,7 +72,11 @@ const login = async (req, res) => {
     if (jwtToken) {
       return res
         .status(200)
-        .cookie("token", jwtToken, { httpOnly: true, secure: true })
+        .cookie("token", jwtToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production", // only secure in prod
+          sameSite: "strict",
+        })
         .json(
           new apiResponse(
             true,

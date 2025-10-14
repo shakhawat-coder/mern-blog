@@ -31,7 +31,7 @@ const userSchema = new Schema(
     profilePic: {
       type: String,
       default:
-        "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+        "https://images.unsplash.com/photo-1740252117044-2af197eea287?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1480",
     },
     socialLinks: {
       type: Map,
