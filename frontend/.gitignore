@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 .env
+ImageUpload.jsx
 
 # Editor directories and files
 .vscode/*

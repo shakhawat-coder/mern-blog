@@ -23,6 +23,7 @@ import Dashboard from "./dashboard/Pages/Dashboard/Dashboard";
 import AddCategory from "./dashboard/Pages/AddCategory/AddCategory";
 import DashboardRootLayout from "./dashboard/DashboardRootLayout";
 import AllCategories from "./dashboard/Pages/AllCategory/AllCategories";
+import ImageUpload from "./dashboard/Pages/AddCategory/ImageUpload";
 
 function App() {
   const router = createBrowserRouter(
@@ -41,6 +42,7 @@ function App() {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/dashboard" element={<DashboardRootLayout />}>
           <Route index element={<Dashboard />} />
+          <Route path="/dashboard/image-up" element={<ImageUpload />} />
           <Route path="add-category" element={<AddCategory />} />
           <Route path="/dashboard/categories" element={<AllCategories />} />
         </Route>

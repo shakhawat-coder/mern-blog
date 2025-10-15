@@ -9,12 +9,21 @@ export const MyBlogApi = createApi({
     }`,
     credentials: "include",
   }),
+  tagTypes: ["Categories"],
   endpoints: (builder) => ({
     getAllCategory: builder.query({
       query: () => `/category`,
+      providesTags: ["Categories"],
     }),
     getSingleCategory: builder.query({
       query: (id) => `/category/${id}`,
+    }),
+    getDeleteCategory: builder.mutation({
+      query: (id) => ({
+        url: `/category/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Categories"],
     }),
     getAllBlog: builder.query({
       query: () => `/blog`,
@@ -58,6 +67,7 @@ export const MyBlogApi = createApi({
 export const {
   useGetAllCategoryQuery,
   useGetSingleCategoryQuery,
+  useGetDeleteCategoryMutation,
   useGetAllBlogQuery,
   useGetSingleBlogQuery,
   useGetHighlightBlogQuery,
