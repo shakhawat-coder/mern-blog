@@ -17,8 +17,15 @@ export const DashboardApi = createApi({
         body: categoryData, // should be FormData
       }),
     }),
+    editCategory: builder.mutation({
+      query: ({ id, ...categoryData }) => ({
+        url: `/category/${id}`,
+        method: "PUT",
+        body: categoryData, // should be FormData
+      }),
+    }),
   }),
 });
 
 // ✅ export the correct hook
-export const { useAddCategoryMutation } = DashboardApi;
+export const { useAddCategoryMutation, useEditCategoryMutation } = DashboardApi;

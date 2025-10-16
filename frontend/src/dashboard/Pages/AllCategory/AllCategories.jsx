@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from "react";
+import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import {
   useGetAllCategoryQuery,
@@ -18,6 +19,7 @@ import {
 import { Edit, Delete } from "@mui/icons-material";
 
 const AllCategories = () => {
+  const navigate = useNavigate();
   const { data, error, isLoading } = useGetAllCategoryQuery();
   const [deleteCategory, { isLoading: isDeleting }] =
     useGetDeleteCategoryMutation();
@@ -27,7 +29,7 @@ const AllCategories = () => {
       {
         accessorKey: "name",
         header: "Category Name",
-        size: 200,
+        size: 100,
         Cell: ({ cell }) => (
           <span className="font-semibold text-gray-800">{cell.getValue()}</span>
         ),
@@ -47,10 +49,20 @@ const AllCategories = () => {
       {
         accessorKey: "description",
         header: "Description",
-        size: 300,
+        size: 200,
+        Cell: ({ cell }) => (
+          <div className="text-gray-600 whitespace-pre-wrap break-words w-40 ">
+            {cell.getValue() || "No description"}
+          </div>
+        ),
+      },
+      {
+        accessorKey: "blogs.length",
+        header: "No. of Blogs",
+        size: 50,
         Cell: ({ cell }) => (
           <span className="text-gray-600 line-clamp-2">
-            {cell.getValue() || "No description"}
+            {cell.getValue() || "No blogs found"}
           </span>
         ),
       },
@@ -89,7 +101,13 @@ const AllCategories = () => {
 
   const handleEdit = (category) => {
     console.log("Edit category:", category);
-    // Implement edit logic
+
+    navigate(`/dashboard/edit-category/${category.name}`, {
+      state: {
+        categoryId: category.id,
+        categoryData: category, // pass entire category object if needed
+      },
+    });
   };
 
   const handleDelete = async (category) => {
@@ -103,7 +121,6 @@ const AllCategories = () => {
       }
     }
   };
-  useEffect(() => {}, [deleteCategory]);
 
   // Table configuration
   const table = useMaterialReactTable({
