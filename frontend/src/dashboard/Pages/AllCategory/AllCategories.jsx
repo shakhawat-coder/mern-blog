@@ -2,10 +2,6 @@ import React, { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import {
-  useGetAllCategoryQuery,
-  useGetDeleteCategoryMutation,
-} from "../../../Features/Api/blog.Api";
-import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
@@ -17,6 +13,7 @@ import {
   Alert,
 } from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
+import { useGetAllCategoryQuery, useGetDeleteCategoryMutation } from "../../../Features/Api/dashboard.api";
 
 const AllCategories = () => {
   const navigate = useNavigate();
@@ -102,7 +99,7 @@ const AllCategories = () => {
   const handleEdit = (category) => {
     console.log("Edit category:", category);
 
-    navigate(`/dashboard/edit-category/${category.name}`, {
+    navigate(`/dashboard/edit-category/${category._id}`, {
       state: {
         categoryId: category.id,
         categoryData: category, // pass entire category object if needed

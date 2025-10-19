@@ -5,7 +5,7 @@ import { IoRocketOutline } from "react-icons/io5";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { GrTechnology } from "react-icons/gr";
 import { Link } from "react-router";
-import { useGetAllCategoryQuery } from "../../Features/Api/blog.Api";
+import { useGetAllCategoryQuery } from "../../Features/Api/dashboard.api";
 const Category = ({
   title = "Choose Categories",
   className = "py-section_gap",

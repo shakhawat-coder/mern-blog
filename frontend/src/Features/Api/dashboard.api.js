@@ -8,6 +8,7 @@ export const DashboardApi = createApi({
     }`,
     credentials: "include",
   }),
+  tagTypes: ["Categories"],
   endpoints: (builder) => ({
     // ✅ Clean, clear naming
     addCategory: builder.mutation({
@@ -17,15 +18,27 @@ export const DashboardApi = createApi({
         body: categoryData, // should be FormData
       }),
     }),
+     getAllCategory: builder.query({
+      query: () => `/category`,
+      providesTags: ["Categories"],
+    }),
     editCategory: builder.mutation({
-      query: ({ id, ...categoryData }) => ({
+      query: ({ id,categoryData }) => ({
         url: `/category/${id}`,
         method: "PUT",
         body: categoryData, // should be FormData
       }),
+      invalidatesTags: ["Categories"],
+    }),
+     getDeleteCategory: builder.mutation({
+      query: (id) => ({
+        url: `/category/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Categories"],
     }),
   }),
 });
 
 // ✅ export the correct hook
-export const { useAddCategoryMutation, useEditCategoryMutation } = DashboardApi;
+export const { useAddCategoryMutation, useGetAllCategoryQuery, useEditCategoryMutation, useGetDeleteCategoryMutation } = DashboardApi;

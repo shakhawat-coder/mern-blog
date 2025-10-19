@@ -1,14 +1,17 @@
 import { useParams, useLocation, useNavigate } from "react-router";
 import React, { useState, useRef, useEffect } from "react";
 import { FaXmark } from "react-icons/fa6";
+import { useEditCategoryMutation } from "../../../Features/Api/dashboard.api";
 
 const UpdateCategory = () => {
   const { id } = useParams(); // Get ID from URL
   const location = useLocation();
   const navigate = useNavigate();
   const { categoryData } = location.state || {};
-  console.log("Category Data:", categoryData);
-
+  // console.log("Category Data:", categoryData);
+  const [editCategory,{data,isLoading,error}]=useEditCategoryMutation()
+  console.log(data);
+  
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
   const [formData, setFormData] = useState({
@@ -68,6 +71,8 @@ const UpdateCategory = () => {
   // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    console.log(value);
+    
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -75,15 +80,23 @@ const UpdateCategory = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+ const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", {
-      ...formData,
-      image: selectedFile, // This will be the File object or null
-      categoryId: id,
-    });
-    // Add your API call here
-  };
+    try {
+      const updatedData = new FormData();
+      updatedData.append("name", formData.name);
+      updatedData.append("description", formData.description);
+      if (selectedFile) {
+        updatedData.append("image", selectedFile);
+      }
+
+      const response = await editCategory({ id, categoryData: updatedData }).unwrap();
+      console.log("Category updated successfully:", response);
+      navigate("/dashboard/categories");
+    } catch (error) {
+      console.error("Error updating category:", error);
+    }
+  }
 
   // Clean up object URLs
   useEffect(() => {
