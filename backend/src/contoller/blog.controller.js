@@ -1,6 +1,7 @@
 const { getPublicIdFromUrl } = require("../helper/cloudinaryPublicId");
 const blogModel = require("../Model/blog.model");
 const categoryModel = require("../Model/category.model");
+const userModel = require("../Model/user.model");
 const { apiError } = require("../utils/ApiError");
 const { apiResponse } = require("../utils/ApiResponse");
 const {
@@ -11,7 +12,14 @@ const {
 const createBlog = async (req, res) => {
   try {
     const { title, description } = req.body;
+    const user = req.user;
+    console.log("Authenticated User in createBlog:", user);
     const images = req.files?.image; // This will be an array of files
+    // if(!req.user){
+    //   return  res
+    //   .status(401)
+    //   .json(new apiError(false, null, "Unauthorized: User not authenticated", true));
+    // }
     if (!title || !description || !images) {
       return res
         .status(400)
@@ -36,6 +44,7 @@ const createBlog = async (req, res) => {
       description,
       image: allUploadImage,
       category: req.body.category,
+      author: user.id,
       ...req.body,
     });
     await categoryModel.findByIdAndUpdate(
@@ -43,7 +52,11 @@ const createBlog = async (req, res) => {
       { $push: { blogs: newBlog._id } },
       { new: true }
     );
-    return res.status(201).json({
+    // await userModel.findByIdAndUpdate(user.id, 
+    //   {
+    //   $push: { blogs: newBlog._id },
+    // });
+    return res.status(201).json({ 
       apiResponse: true,
       success: true,
       message: "Blog created successfully",
@@ -57,7 +70,7 @@ const createBlog = async (req, res) => {
   }
 };
 
-// =================get all blogs ==============
+// =================get all blogs for frontend==============
 const getAllBlogs = async (req, res) => {
   try {
     const allBlogs = await blogModel.find({}).populate("category");
@@ -79,6 +92,37 @@ const getAllBlogs = async (req, res) => {
       .json(new apiError(false, null, "Internal server error", true));
   }
 };
+
+// ====================get all blogs for dashboard==============
+const getAllBlogsForDashboard = async (req, res) => {
+  try {
+     let allBlogs = [];
+    if (req.user.role === "admin") {
+      allBlogs = await blogModel.find({}).populate("author", "name email role").populate("category");
+    } else {
+      allBlogs = await blogModel
+        .find({ author: req.user.id })
+        .populate("author", "name email role")
+        .populate("category");
+    }
+    if (!allBlogs || allBlogs.length === 0) {
+      return res
+        .status(404)
+        .json(new apiError(false, null, "No blogs found", true));
+    }
+    return res.status(200).json({
+      apiResponse: true,
+      success: true,
+      message: "All blogs fetched successfully for dashboard",
+      data: allBlogs,
+    })
+  } catch (error) {
+    console.error("❌ Error fetching blogs for dashboard:", error);
+    return res
+      .status(500)
+      .json(new apiError(false, null, "Internal server error", true));
+  }
+}
 
 // =================get single blog ==============
 const getSingleBlog = async (req, res) => {
@@ -205,6 +249,7 @@ const deleteBlog = async (req, res) => {
 module.exports = {
   createBlog,
   getAllBlogs,
+  getAllBlogsForDashboard,
   getSingleBlog,
   editBlog,
   deleteBlog,

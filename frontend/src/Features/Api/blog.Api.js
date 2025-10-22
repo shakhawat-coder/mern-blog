@@ -46,6 +46,9 @@ export const MyBlogApi = createApi({
         },
       }),
     }),
+    getSingleUser: builder.query({
+      query: (id) => `/userinfo/${id}`,
+    }),
     getLoggedInUser: builder.query({
       query: () => ({
         url: "/me",
@@ -62,5 +65,6 @@ export const {
   useGetHighlightBlogQuery,
   useGetRegisterUserMutation,
   useGetLoginUserMutation,
+  useGetSingleUserQuery,
   useGetLoggedInUserQuery,
 } = MyBlogApi;

@@ -17,6 +17,7 @@
     "@mui/x-date-pickers": "^8.14.0",
     "@reduxjs/toolkit": "^2.8.2",
     "@tailwindcss/vite": "^4.1.11",
+    "@tinymce/tinymce-react": "^6.3.0",
     "filepond": "^4.32.9",
     "filepond-plugin-image-preview": "^4.6.12",
     "formik": "^2.4.6",
@@ -31,6 +32,7 @@
     "react-toastify": "^11.0.5",
     "slick-carousel": "^1.8.1",
     "tailwindcss": "^4.1.11",
+    "tinymce": "^8.1.2",
     "yup": "^1.7.1"
   },
   "devDependencies": {

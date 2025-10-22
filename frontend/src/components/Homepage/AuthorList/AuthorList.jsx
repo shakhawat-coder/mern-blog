@@ -60,7 +60,7 @@ const AuthorList = ({ limit = 4 }) => {
                     {author.slice(0, limit).map((item, index) => (
                         <div key={index} className="col-span-12 md:col-span-6 lg:col-span-3">
                             <AuthorCard {...item} />
-                            <Author {...item} />
+                            {/* <Author {...item} /> */}
                         </div>
                     ))}
                 </div>

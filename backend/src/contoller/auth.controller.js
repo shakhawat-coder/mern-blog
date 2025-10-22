@@ -75,7 +75,7 @@ const login = async (req, res) => {
         .cookie("token", jwtToken, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production", // only secure in prod
-          sameSite: "strict",
+          sameSite: "lax",
         })
         .json(
           new apiResponse(
@@ -117,8 +117,28 @@ const getLoggedInUser = async (req, res) => {
       .json(new apiError(false, null, "Internal server error", true));
   }
 };
+// ================get single user by id================
+const getSingleUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await userModel.findById(id).select("-password");
+    if (!user) {
+      return res
+        .status(404)
+        .json(new apiError(false, null, "User not found", true));
+    }
+    return res.status(200).json(new apiResponse(true, user, "Success", false));
+    
+  } catch (error) {
+    console.error("❌ getSingleUser Error:", error);
+    return res
+      .status(501)
+      .json(new apiError(false, null, "Internal server error", true));
+  }
+};
 module.exports = {
   registration,
   login,
+  getSingleUser,
   getLoggedInUser,
 };

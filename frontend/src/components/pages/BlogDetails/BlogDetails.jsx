@@ -1,28 +1,25 @@
 import React from "react";
-import author1 from "/author1.png";
-import image1 from "/startup.png";
-import image2 from "/startup2.png";
-import image3 from "/business.png";
-import image4 from "/tech.png";
-import image5 from "/economy.png";
-import blogdetails from "/blogdetails.png";
 import { Link, useParams } from "react-router";
 import Heading from "../../commonComponents/Heading";
 import JoinTeam from "../../commonComponents/JoinTeam";
 import {
   useGetSingleBlogQuery,
   useGetSingleCategoryQuery,
+  useGetSingleUserQuery,
 } from "../../../Features/Api/blog.Api";
 const BlogDetails = () => {
   const { id } = useParams();
   const singleBlog = useGetSingleBlogQuery(id);
   const blogDescription = singleBlog?.data?.data;
-  console.log(blogDescription);
 
-  console.log(" blogdetails", blogDescription);
   const categoryId = blogDescription?.category?._id;
-  const { data, error, isLoading } = useGetSingleCategoryQuery(categoryId);
-  const realtedBlog = data?.data?.blogs?.filter((blog) => blog._id !== id);
+ const { data: categoryData, error: categoryError, isLoading: categoryLoading } =
+   useGetSingleCategoryQuery(categoryId, { skip: !categoryId });
+ const realtedBlog = categoryData?.data?.blogs?.filter((blog) => blog._id !== id);
+ const { data: authorInfo, error: authorError, isLoading: authorIsLoading } = useGetSingleUserQuery(blogDescription?.author, { skip: !blogDescription?.author });
+  const authorInformation=authorInfo?.data;
+  console.log(authorInformation);
+ 
 
   return (
     <>
@@ -31,10 +28,10 @@ const BlogDetails = () => {
           <div className="col-span-8 col-start-3">
             <div className="flex items-center gap-5 mb-8">
               <div className="h-12 w-12 rounded-full overflow-hidden">
-                <img src={author1} alt="author1" />
+                <img src={authorInformation?.profilePic} alt={authorInformation?.name} />
               </div>
               <div className="">
-                <p className="text-gray-600">Alice Johnson</p>
+                <Link to={`/author/${authorInformation?._id}`} className="text-gray-600">{authorInformation?.name}</Link>
                 <p className="text-gray-400 text-sm">
                   <span>Posted On </span>
                   {blogDescription?.createdAt}
@@ -61,7 +58,10 @@ const BlogDetails = () => {
             </div>
           </div>
           <div className="col-span-8 col-start-3">
-            <p className="text-gray-600 mb-8">{blogDescription?.description}</p>
+            <div
+  className="text-gray-600 mb-8 prose prose-lg max-w-none"
+  dangerouslySetInnerHTML={{ __html: blogDescription?.description }}
+></div>
           </div>
         </div>
 

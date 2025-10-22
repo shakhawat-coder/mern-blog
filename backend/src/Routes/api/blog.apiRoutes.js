@@ -7,10 +7,11 @@ const {
   deleteBlog,
 } = require("../../contoller/blog.controller");
 const { upload } = require("../../middleware/multer.middleware");
+const { authGuard } = require("../../middleware/authGuard.middlaware");
 const _ = express.Router();
 
 _.route("/blog")
-  .post(upload.fields([{ name: "image", maxCount: 5 }]), createBlog)
+  .post(upload.fields([{ name: "image", maxCount: 5 }]),authGuard, createBlog)
   .get(getAllBlogs);
 
 _.route("/blog/:id")

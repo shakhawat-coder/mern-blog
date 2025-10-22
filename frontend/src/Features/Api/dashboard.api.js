@@ -37,8 +37,17 @@ export const DashboardApi = createApi({
       }),
       invalidatesTags: ["Categories"],
     }),
+
+    // ==================blog apis====================
+    addBlog: builder.mutation({
+      query: (blogData) => ({
+        url: `/blog`,
+        method: "POST",
+        body: blogData, // should be FormData
+      }),
+    }),
   }),
 });
 
 // ✅ export the correct hook
-export const { useAddCategoryMutation, useGetAllCategoryQuery, useEditCategoryMutation, useGetDeleteCategoryMutation } = DashboardApi;
+export const { useAddCategoryMutation, useGetAllCategoryQuery, useEditCategoryMutation, useGetDeleteCategoryMutation, useAddBlogMutation } = DashboardApi;

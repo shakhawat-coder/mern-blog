@@ -24,6 +24,11 @@ const blogSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
   },
   {
     timestamps: true,

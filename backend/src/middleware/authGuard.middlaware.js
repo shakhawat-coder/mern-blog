@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 
 const authGuard = (req, res, next) => {
+  console.log("Cookies received:", req.cookies);
+console.log("Authorization header:", req.headers.authorization);
   try {
     let token;
     if (req.cookies.token) {
@@ -31,4 +33,13 @@ const authGuard = (req, res, next) => {
   }
 };
 
-module.exports = authGuard;
+const adminGuard = (req, res, next) => {
+  if (req.user && req.user.role !== "admin") {
+    return res
+      .status(401)
+      .json({ success: false, message: "Unauthorized access" });
+  }
+  next();
+};
+
+module.exports = {  authGuard, adminGuard };
