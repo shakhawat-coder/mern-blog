@@ -2,6 +2,7 @@ const express = require("express");
 const {
   registration,
   login,
+  logout,
   getLoggedInUser,
   getSingleUser,
 } = require("../../contoller/auth.controller");
@@ -11,6 +12,7 @@ const _ = express.Router();
 _.route("/register").post(registration);
 _.route("/userinfo/:id").get(getSingleUser);
 _.route("/login").post(login);
+_.route("/logout").post(logout);
 _.route("/me").get(authGuard, getLoggedInUser);
 _.route("/admin/me").get(adminGuard,getLoggedInUser)
 module.exports = _;

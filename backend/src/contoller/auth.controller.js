@@ -74,6 +74,7 @@ const login = async (req, res) => {
         .status(200)
         .cookie("token", jwtToken, {
           httpOnly: true,
+          expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
           secure: process.env.NODE_ENV === "production", // only secure in prod
           sameSite: "lax",
         })
@@ -100,6 +101,25 @@ const login = async (req, res) => {
       .json(new apiError(false, null, "Internal server error", true));
   }
 };
+// ==================user logout controller ==================
+const logout = async (req, res) => {
+  try {
+    return res
+      .status(200)
+      .cookie("token", "", {
+        httpOnly: true,
+        expires: new Date(0),
+        secure: process.env.NODE_ENV === "production", // only secure in prod
+        sameSite: "lax",
+      })
+      .json(new apiResponse(true, null, "User logged out successfully", false));
+  } catch (error) {
+    console.error("❌ Logout Error:", error);
+    return res
+      .status(501)
+      .json(new apiError(false, null, "Internal server error", true));
+  }
+}
 // ========================get logged is user================
 const getLoggedInUser = async (req, res) => {
   try {
@@ -139,6 +159,7 @@ const getSingleUser = async (req, res) => {
 module.exports = {
   registration,
   login,
+  logout,
   getSingleUser,
   getLoggedInUser,
 };

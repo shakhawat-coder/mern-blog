@@ -26,6 +26,7 @@ import AllCategories from "./dashboard/Pages/AllCategory/AllCategories";
 import ImageUpload from "./dashboard/Pages/AddCategory/ImageUpload";
 import UpdateCategory from "./dashboard/Pages/UpdateCategory/UpdateCategory";
 import AddBlog from "./dashboard/Pages/AddBlog/AddBlog";
+import AllBlogs from "./dashboard/Pages/AllBlog/AllBlogs";
 
 function App() {
   const router = createBrowserRouter(
@@ -50,6 +51,7 @@ function App() {
 
           {/* =================blogs route====================== */}
           <Route path="/dashboard/add-blog" element={<AddBlog />} />
+          <Route path="/dashboard/all-blog" element={<AllBlogs />} />
         </Route>
 
         {/* =======================dashboard====================== */}

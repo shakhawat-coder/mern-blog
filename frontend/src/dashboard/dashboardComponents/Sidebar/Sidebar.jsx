@@ -1,14 +1,20 @@
 import React, { useState } from "react";
-import { NavLink, useLocation } from "react-router";
+import { NavLink, useLocation, useNavigate } from "react-router";
 import { FaChevronRight } from "react-icons/fa6";
 import { AiOutlineDashboard } from "react-icons/ai";
+import { CiLogout } from "react-icons/ci";
 import { useEffect } from "react";
+import { MyBlogApi } from "../../../Features/Api/blog.Api";
+import { useGetLogoutUserMutation } from "../../../Features/Api/blog.Api";
+import Button from "../../../components/commonComponents/Button";
+import { useDispatch } from "react-redux";
 
 const Sidebar = ({ userdata }) => {
-
-  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [logout, { data, error }] = useGetLogoutUserMutation();
 
   // Define all dropdown menus dynamically
   const dropdownMenus = [
@@ -36,9 +42,9 @@ const Sidebar = ({ userdata }) => {
       type: "dropdown",
       items: [
         { label: "Add Blog", to: "/dashboard/add-blog" },
-        { label: "All Blogs", to: "/dashboard/blogs" },
+        { label: "All Blogs", to: "/dashboard/all-blog" },
       ],
-      activePaths: ["/dashboard/blogs", "/dashboard/add-blog"],
+      activePaths: ["/dashboard/all-blog", "/dashboard/add-blog"],
     },
     {
       id: "products",
@@ -148,6 +154,18 @@ const Sidebar = ({ userdata }) => {
       return null;
     });
   };
+  const handleLogout = async () => {
+    console.log("logout");
+
+    try {
+      await logout().unwrap();
+      localStorage.removeItem("token");
+      dispatch(MyBlogApi.util.resetApiState());
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout Error:", error);
+    }
+  };
 
   return (
     <div className="w-64 h-screen border-r border-gray-200 p-4">
@@ -163,6 +181,15 @@ const Sidebar = ({ userdata }) => {
 
       {/* Menu */}
       <ul className="flex flex-col gap-1">{renderMenuItems()}</ul>
+
+      {/* Logout Button */}
+      {/* <Button buttonText="Logout" widht="w-full" onClick={handleLogout} /> */}
+      <button
+        className="px-12 mt-5 flex items-center gap-2 border py-3 bg-white w-full text-black font-bold cursor-pointer"
+        onClick={handleLogout}
+      >
+        <CiLogout className="text-4xl" /> Logout
+      </button>
     </div>
   );
 };

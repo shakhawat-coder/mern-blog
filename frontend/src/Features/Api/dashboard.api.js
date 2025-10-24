@@ -22,6 +22,7 @@ export const DashboardApi = createApi({
       query: () => `/category`,
       providesTags: ["Categories"],
     }),
+
     editCategory: builder.mutation({
       query: ({ id,categoryData }) => ({
         url: `/category/${id}`,
@@ -46,8 +47,12 @@ export const DashboardApi = createApi({
         body: blogData, // should be FormData
       }),
     }),
+    getAllBlog: builder.query({
+      query: () => `/dashboard/blogs`,
+      providesTags: ["Blogs"],
+    }),
   }),
 });
 
 // ✅ export the correct hook
-export const { useAddCategoryMutation, useGetAllCategoryQuery, useEditCategoryMutation, useGetDeleteCategoryMutation, useAddBlogMutation } = DashboardApi;
+export const { useAddCategoryMutation, useGetAllCategoryQuery, useEditCategoryMutation, useGetDeleteCategoryMutation, useAddBlogMutation, useGetAllBlogQuery } = DashboardApi;

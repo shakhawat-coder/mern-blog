@@ -52,10 +52,10 @@ const createBlog = async (req, res) => {
       { $push: { blogs: newBlog._id } },
       { new: true }
     );
-    // await userModel.findByIdAndUpdate(user.id, 
-    //   {
-    //   $push: { blogs: newBlog._id },
-    // });
+    await userModel.findByIdAndUpdate(user.id, 
+      {
+      $push: { blogs: newBlog._id },
+    });
     return res.status(201).json({ 
       apiResponse: true,
       success: true,

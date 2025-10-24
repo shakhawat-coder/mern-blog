@@ -46,6 +46,13 @@ export const MyBlogApi = createApi({
         },
       }),
     }),
+    getLogoutUser: builder.mutation({
+      query: () => ({
+        url: `/logout`,
+        method: "POST",
+        credentials: "include",
+      }),
+    }),
     getSingleUser: builder.query({
       query: (id) => `/userinfo/${id}`,
     }),
@@ -65,6 +72,7 @@ export const {
   useGetHighlightBlogQuery,
   useGetRegisterUserMutation,
   useGetLoginUserMutation,
+  useGetLogoutUserMutation,
   useGetSingleUserQuery,
   useGetLoggedInUserQuery,
 } = MyBlogApi;
